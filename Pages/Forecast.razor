@@ -1,0 +1,20 @@
+﻿@using BlazorTableDemo.Data
+
+@if (forecast != null)
+{
+    <div class="card-header">
+        <span><strong>Forecast</strong></span>
+    </div>    
+    <div class="card-body">
+        <div class="forecast-grid">
+            <div>@forecast.Date.ToShortDateString()</div>
+            <div>@forecast.TemperatureC</div>
+            <div>@forecast.TemperatureF</div>
+            <div>@forecast.Summary</div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public WeatherForecast forecast { get; set; }
+}

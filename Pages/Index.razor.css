@@ -1,0 +1,5 @@
+﻿.vRow:hover {
+    font-weight: bold;
+    background-color: lightcyan;
+    cursor:pointer;
+}

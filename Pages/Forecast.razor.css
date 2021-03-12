@@ -1,0 +1,6 @@
+﻿.forecast-grid {
+    display: grid;
+    grid-template-columns: 10% 10% 10% 10%;
+    justify-items: stretch;
+    align-items: stretch;
+}
