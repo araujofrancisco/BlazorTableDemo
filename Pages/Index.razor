@@ -40,10 +40,18 @@
 <div>    
     <Forecast forecast=@curSelection />
 </div>
+<ModalDialog showModal=@showModal Data=@curSelection OnChange="ModalDialog_Change" />
 
 @code {
     private Virtualize<WeatherForecast> asyncVirtualize;
     private WeatherForecast curSelection = null;
+    private bool showModal = false;
+
+    private void ModalDialog_Change(WeatherForecast Value)
+    {
+        showModal = false;
+        curSelection = Value;
+    }
 
     protected async ValueTask<ItemsProviderResult<WeatherForecast>> LoadForecasts(ItemsProviderRequest request)
     {
@@ -54,5 +62,6 @@
     private void row_click(WeatherForecast forecast)
     {
         curSelection = forecast;
+        showModal = true;
     }
 }

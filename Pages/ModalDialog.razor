@@ -1,0 +1,72 @@
+﻿@using BlazorTableDemo.Data
+
+@if (showModal)
+{
+    // base for modal dialog from: https://gist.github.com/conficient/ba98d1662c659e170ec16650acea05c8
+    <div class="modal fade show" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog" @onclick="@ModalCancel">
+        <div class="modal-dialog" @onclick:stopPropagation="true">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm action</h4>
+                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <p>You can modify current selection</p>
+                    <EditForm Model=@Changes>
+                        <div class="row"><label>Date:<InputDate @bind-Value="@Changes.Date"></InputDate></label></div>
+                        <div class="row"><label>Temperature Celcius:<InputNumber @bind-Value="@Changes.TemperatureC"></InputNumber></label></div>
+                        <div class="row"><label>Temperature Farenheit:@Changes.TemperatureF</label></div>
+                        <div class="row"><label>Summary:<InputText @bind-Value="@Changes.Summary"></InputText></label></div>
+                    </EditForm>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn" @onclick="@ModalCancel">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick=@ModalOk>Save</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    [Parameter] public bool showModal { get; set; } = false;
+    [Parameter] public EventCallback<WeatherForecast> OnChange { get; set; }
+    [Parameter] public WeatherForecast Data { get; set; }
+
+    private WeatherForecast Changes { get; set; }
+
+    void ModalCancel() => Hide(false);
+    void ModalOk()
+    {
+        Console.WriteLine("Modal ok");
+        Hide(true);
+    }
+
+    void Hide(bool Save)
+    {
+        showModal = false;
+        if (Save) Data = Changes;
+        OnChange.InvokeAsync(Data);
+    }
+
+    WeatherForecast CreateCopy(WeatherForecast Data)
+    {
+        return new() { Date = Data.Date, TemperatureC = Data.TemperatureC, Summary = Data.Summary };
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        // initialize the model we are going to use in the editform
+        if (Data != null) Changes = CreateCopy(Data);
+    }
+}
