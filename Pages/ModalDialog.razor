@@ -3,36 +3,38 @@
 @if (showModal)
 {
     // base for modal dialog from: https://gist.github.com/conficient/ba98d1662c659e170ec16650acea05c8
-    <div class="modal fade show" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog" @onclick="@ModalCancel">
-        <div class="modal-dialog" @onclick:stopPropagation="true">
-            <div class="modal-content">
+<div class="modal fade show" style="display:block; background-color: rgba(10,10,10,.8);" aria-modal="true" role="dialog" @onclick="@ModalCancel">
+    <div class="modal-dialog" @onclick:stopPropagation="true">
+        <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Confirm action</h4>
-                    <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <p>You can modify current selection</p>
-                    <EditForm Model=@Changes>
-                        <div class="row"><label>Date:<InputDate @bind-Value="@Changes.Date"></InputDate></label></div>
-                        <div class="row"><label>Temp. (C):<InputNumber @bind-Value="@Changes.TemperatureC"></InputNumber></label></div>
-                        <div class="row"><label>Temp. (F):@Changes.TemperatureF</label></div>
-                        <div class="row"><label>Summary:<InputText @bind-Value="@Changes.Summary"></InputText></label></div>
-                    </EditForm>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn" @onclick="@ModalCancel">Cancel</button>
-                    <button type="button" class="btn btn-primary" @onclick=@ModalOk>Save</button>
-                </div>
-
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm action</h4>
+                <button type="button" class="close" @onclick="@ModalCancel">&times;</button>
             </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>You can modify current selection</p>
+                <EditForm Model=@Changes>
+                    <div class="weather-grid">
+                        <div class="weather-row"><label>Date</label><InputDate @bind-Value="@Changes.Date"></InputDate></div>                        
+                        <div class="weather-row"><label>Temp. (C)</label><InputNumber @bind-Value="@Changes.TemperatureC"></InputNumber></div>
+                        <div class="weather-row"><label>Temp. (F)</label>@Changes.TemperatureF</div>
+                        <div class="weather-row"><label>Summary</label><InputText @bind-Value="@Changes.Summary"></InputText></div>
+                    </div>
+                </EditForm>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn" @onclick="@ModalCancel">Cancel</button>
+                <button type="button" class="btn btn-primary" @onclick=@ModalOk>Save</button>
+            </div>
+
         </div>
     </div>
+</div>
 }
 
 @code
