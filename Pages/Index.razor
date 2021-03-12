@@ -5,9 +5,9 @@
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from a service and showing on virtualized table.</p>
 
-<div class="vWrapper" style="height: 250px;overflow-y:scroll;">
+<div class="vWrapper">
     <table class="table">
         <thead>
             <tr>
@@ -20,6 +20,7 @@
         <tbody>
             <Virtualize @ref="asyncVirtualize" ItemsProvider="LoadForecasts" Context="forecast" ItemSize="10">
                 <ItemContent>
+                    <!-- here we set the row click event handler and the pass current row item as parameter -->
                     <tr class="vRow" @onclick="@(() => RowClick(forecast))">
                         <td>@forecast.Date.ToShortDateString()</td>
                         <td>@forecast.TemperatureC</td>
@@ -37,9 +38,11 @@
     </table>
 </div>
 <br />
-<div>    
+<div> 
+    <!-- here we show the last record clicked, if data gets modified in dialog it will show updated values -->
     <Forecast forecast=@curSelection />
 </div>
+<!-- our modal dialog that will allow us to do edits on clicked data -->
 <ModalDialog showModal=@showModal Data=@curSelection OnChange="DialogChange" />
 
 @code {
@@ -53,6 +56,11 @@
         curSelection = forecast;
     }
 
+    /// <summary>
+    /// ItemProvider for Virtualize component, this will retrieve the data from our service and manage records that will be shown.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     protected async ValueTask<ItemsProviderResult<WeatherForecast>> LoadForecasts(ItemsProviderRequest request)
     {
         var fc = await ForecastService.GetForecastAsync(DateTime.Now);

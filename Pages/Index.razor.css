@@ -1,4 +1,15 @@
-﻿.vRow:hover {
+﻿.vWrapper {
+    height: 250px;
+    overflow-y:scroll;
+}
+
+.table th {
+    background: white;
+    position: sticky;
+    top: 0px;
+}
+
+.vRow:hover {
     font-weight: bold;
     background-color: lightcyan;
     cursor:pointer;
