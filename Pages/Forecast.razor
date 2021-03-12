@@ -1,10 +1,10 @@
 ﻿@using BlazorTableDemo.Data
 
+<div class="card-header">
+    <span><strong>Forecast</strong></span>
+</div>
 @if (forecast != null)
 {
-    <div class="card-header">
-        <span><strong>Forecast</strong></span>
-    </div>    
     <div class="card-body">
         <div class="forecast-grid">
             <div>@forecast.Date.ToShortDateString()</div>
