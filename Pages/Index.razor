@@ -20,7 +20,7 @@
         <tbody>
             <Virtualize @ref="asyncVirtualize" ItemsProvider="LoadForecasts" Context="forecast" ItemSize="10">
                 <ItemContent>
-                    <tr class="vRow" @onclick="@(() => row_click(forecast))">
+                    <tr class="vRow" @onclick="@(() => RowClick(forecast))">
                         <td>@forecast.Date.ToShortDateString()</td>
                         <td>@forecast.TemperatureC</td>
                         <td>@forecast.TemperatureF</td>
@@ -40,17 +40,17 @@
 <div>    
     <Forecast forecast=@curSelection />
 </div>
-<ModalDialog showModal=@showModal Data=@curSelection OnChange="ModalDialog_Change" />
+<ModalDialog showModal=@showModal Data=@curSelection OnChange="DialogChange" />
 
 @code {
-    private Virtualize<WeatherForecast> asyncVirtualize;
-    private WeatherForecast curSelection = null;
+    private Virtualize<WeatherForecast> asyncVirtualize;        // can be used to force table update if required by calling asyncVirtualize.RefreshDataAsync()
+    private WeatherForecast curSelection;
     private bool showModal = false;
 
-    private void ModalDialog_Change(WeatherForecast Value)
+    private void DialogChange(WeatherForecast forecast)
     {
         showModal = false;
-        curSelection = Value;
+        curSelection = forecast;
     }
 
     protected async ValueTask<ItemsProviderResult<WeatherForecast>> LoadForecasts(ItemsProviderRequest request)
@@ -59,7 +59,11 @@
         return new ItemsProviderResult<WeatherForecast>(fc.Skip(request.StartIndex).Take(request.Count), fc.Count());
     }
 
-    private void row_click(WeatherForecast forecast)
+    /// <summary>
+    /// Event on table row click that shows a modal dialog to allow edit the data.
+    /// </summary>
+    /// <param name="forecast">Model for the row clicked</param>
+    private void RowClick(WeatherForecast forecast)
     {
         curSelection = forecast;
         showModal = true;

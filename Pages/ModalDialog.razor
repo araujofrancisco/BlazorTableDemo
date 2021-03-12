@@ -18,8 +18,8 @@
                     <p>You can modify current selection</p>
                     <EditForm Model=@Changes>
                         <div class="row"><label>Date:<InputDate @bind-Value="@Changes.Date"></InputDate></label></div>
-                        <div class="row"><label>Temperature Celcius:<InputNumber @bind-Value="@Changes.TemperatureC"></InputNumber></label></div>
-                        <div class="row"><label>Temperature Farenheit:@Changes.TemperatureF</label></div>
+                        <div class="row"><label>Temp. (C):<InputNumber @bind-Value="@Changes.TemperatureC"></InputNumber></label></div>
+                        <div class="row"><label>Temp. (F):@Changes.TemperatureF</label></div>
                         <div class="row"><label>Summary:<InputText @bind-Value="@Changes.Summary"></InputText></label></div>
                     </EditForm>
                 </div>
@@ -50,16 +50,25 @@
         Hide(true);
     }
 
-    void Hide(bool Save)
+    void Hide(bool save)
     {
         showModal = false;
-        if (Save) Data = Changes;
+        // copy changes to data parameter
+        if (save) UpdateChanges(Data, Changes);
         OnChange.InvokeAsync(Data);
     }
 
-    WeatherForecast CreateCopy(WeatherForecast Data)
+    void UpdateChanges(WeatherForecast data, WeatherForecast changes)
     {
-        return new() { Date = Data.Date, TemperatureC = Data.TemperatureC, Summary = Data.Summary };
+        data.Date = changes.Date;
+        data.TemperatureC = changes.TemperatureC;
+        data.Summary = changes.Summary;
+    }
+
+    WeatherForecast CreateCopy(WeatherForecast data)
+    {
+        // returns a new object that includes the data from the one received by parameter
+        return new() { Date = data.Date, TemperatureC = data.TemperatureC, Summary = data.Summary };
     }
 
     protected override void OnParametersSet()
