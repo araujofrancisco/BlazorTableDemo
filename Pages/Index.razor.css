@@ -1,6 +1,12 @@
-﻿.vWrapper {
+﻿.virtWrapper {
     height: 250px;
     overflow-y:scroll;
+}
+
+.table {
+    margin-left: 25px;
+    margin-right: 25px;
+    width: -webkit-fill-available;
 }
 
 .table th {
@@ -9,8 +15,20 @@
     top: 0px;
 }
 
-.vRow:hover {
+.row {
+    display: table-row;    
+}
+
+.col {
+    display:table-cell;
+    position: inherit;
+    width: auto;    
+}
+
+.row:hover {
     font-weight: bold;
     background-color: lightcyan;
-    cursor:pointer;
+    cursor: pointer;
+    transform: scale(1.025);
+    transition: transform .2s;
 }

@@ -1,6 +1,9 @@
-﻿.forecast-grid {
-    display: grid;
-    grid-template-columns: 10% 10% 10% 10%;
-    justify-items: stretch;
+﻿.table {
     align-items: stretch;
+    display: grid;
+    justify-items: stretch;
+    grid-template-columns: repeat(4, 2fr);
+    margin-left: 25px;
+    margin-right: 25px;
+    width: -webkit-fill-available;
 }

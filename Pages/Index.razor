@@ -7,7 +7,7 @@
 
 <p>This component demonstrates fetching data from a service and showing on virtualized table.</p>
 
-<div class="vWrapper">
+<div class="virtWrapper">
     <table class="table">
         <thead>
             <tr>
@@ -21,11 +21,11 @@
             <Virtualize @ref="asyncVirtualize" ItemsProvider="LoadForecasts" Context="forecast" ItemSize="10">
                 <ItemContent>
                     <!-- here we set the row click event handler and the pass current row item as parameter -->
-                    <tr class="vRow" @onclick="@(() => RowClick(forecast))">
-                        <td>@forecast.Date.ToShortDateString()</td>
-                        <td>@forecast.TemperatureC</td>
-                        <td>@forecast.TemperatureF</td>
-                        <td>@forecast.Summary</td>
+                    <tr class="row" @onclick="@(() => RowClick(forecast))">
+                        <td class="col">@forecast.Date.ToShortDateString()</td>
+                        <td class="col">@forecast.TemperatureC</td>
+                        <td class="col">@forecast.TemperatureF</td>
+                        <td class="col">@forecast.Summary</td>
                     </tr>
                 </ItemContent>
                 <Placeholder>
