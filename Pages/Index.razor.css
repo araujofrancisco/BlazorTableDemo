@@ -9,10 +9,11 @@
     width: -webkit-fill-available;
 }
 
-.table th {
+.table thead th {
     background: white;
     position: sticky;
     top: 0px;
+    z-index: 1;
 }
 
 .row {
