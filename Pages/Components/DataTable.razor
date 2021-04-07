@@ -117,6 +117,8 @@
             SortColumnGuid = column.Guid;
             SortDirection = column.DefaultSortDirection;
             SortColumn = column.GetColumnVisualPropertyName();
+
+            SortChanged(SortColumn, SortDirection);
         }
 
         StateHasChanged();
@@ -131,8 +133,11 @@
     {
         if (firstRender)
         {
-            foreach (DataTableColumn<TModel> column in Columns)
-                column.StateChanged += ColumnStateChanged;
+            await Task.Run(() =>
+            {
+                foreach (DataTableColumn<TModel> column in Columns)
+                    column.StateChanged += ColumnStateChanged;
+            });
             //StateHasChanged();
         }
     }
@@ -158,6 +163,15 @@
     }
 
     /// <summary>
+    /// Does force a data refresh.
+    /// </summary>
+    /// <returns></returns>
+    public async Task Refresh()
+    {
+        await asyncVirtualize.RefreshDataAsync();
+    }
+
+    /// <summary>
     /// Does Callback Action with new sort column and direction and force a data refresh.
     /// </summary>
     /// <param name="SortColumn"></param>
@@ -166,7 +180,7 @@
     protected async Task SortUpdate(string SortColumn, SortDirection SortDirection)
     {
         SortChanged(SortColumn, SortDirection);
-        await asyncVirtualize.RefreshDataAsync();
+        await Refresh();
     }
 
     /// <summary>
