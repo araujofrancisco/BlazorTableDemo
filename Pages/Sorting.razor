@@ -4,7 +4,7 @@
 @inject WeatherForecastService ForecastService
 
 <DataTable TModel="WeatherForecast" Items="LoadForecasts" SortChanged="(c, d) => { this.SortColumn = c; this.SortDirection = d; }">
-    <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.Date" />
+    <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.Date.ToShortDateString()" />
     <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.TemperatureC" CustomTitle="Celsius" />
     <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.TemperatureF" CustomTitle="Fahrenheit" />
     <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.Summary" />
