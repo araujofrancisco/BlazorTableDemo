@@ -26,6 +26,10 @@ namespace BlazorTableDemo.Models
                     m.Member.Name,
                 UnaryExpression u when u.Operand is MemberExpression m =>
                     m.Member.Name,
+                MethodCallExpression c when c.Arguments.Count > 0 =>                    
+                    ((MemberExpression)c.Arguments[0]).Member.Name,
+                MethodCallExpression o when o.Object is MemberExpression m =>
+                    m.Member.Name,
                 _ =>
                     throw new NotImplementedException(expression.GetType().ToString())
             };
