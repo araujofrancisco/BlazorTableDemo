@@ -30,6 +30,8 @@ namespace BlazorTableDemo.Models
                     ((MemberExpression)c.Arguments[0]).Member.Name,
                 MethodCallExpression o when o.Object is MemberExpression m =>
                     m.Member.Name,
+                ConditionalExpression i when i.Test is MemberExpression m =>
+                                    ((MemberExpression)m.Expression).Member.Name,
                 _ =>
                     throw new NotImplementedException(expression.GetType().ToString())
             };
