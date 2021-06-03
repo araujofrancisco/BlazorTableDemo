@@ -108,5 +108,58 @@ namespace BlazorTableDemo.Models
         {
             return source.OrderByDescending(GetExpression<T>(propertyName));
         }
+
+        /// <summary>
+        /// Conditional Lambda expression without breaking the flow of the expression.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="elements"></param>
+        /// <param name="condition"></param>
+        /// <param name="thenPath"></param>
+        /// <param name="elsePath"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> IfThenElse<T>(
+            this IEnumerable<T> elements,
+            Func<bool> condition,
+            Func<IEnumerable<T>, IEnumerable<T>> thenPath,
+            Func<IEnumerable<T>, IEnumerable<T>> elsePath)
+        {
+            return condition()
+                ? thenPath(elements)
+                : elsePath(elements);
+        }
+
+        /// <summary>
+        /// Conditional Lambda expression without breaking the flow of the expression.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="elements"></param>
+        /// <param name="condition"></param>
+        /// <param name="thenPath"></param>
+        /// <param name="elsePath"></param>
+        /// <returns></returns>
+        public static IQueryable<T> IfThenElse<T>(
+            this IQueryable<T> elements,
+            Func<bool> condition,
+            Func<IQueryable<T>, IQueryable<T>> thenPath,
+            Func<IQueryable<T>, IQueryable<T>> elsePath)
+        {
+            return condition()
+                ? thenPath(elements)
+                : elsePath(elements);
+        }
+
+        /// <summary>
+        /// Does creates a BinaryExpression that represents an AndAlso with the two provided expressions.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static Expression<Func<T, bool>> And<T>(Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
+        {
+            var invokedExpr = Expression.Invoke(right, left.Parameters.Cast<Expression>());
+            return Expression.Lambda<Func<T, bool>>(Expression.AndAlso(left.Body, invokedExpr), left.Parameters);
+        }
     }
 }
