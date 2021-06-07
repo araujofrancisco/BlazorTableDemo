@@ -102,6 +102,34 @@
     private SortDirection SortDirection { get; set; } = SortDirection.Ascending;
     private string SortColumn { get; set; }
 
+    /// <summary>
+    /// Returns the default sort column.
+    /// </summary>
+    public string DefaultSortColumn
+    {
+        get
+        {
+            return Columns
+                .Where(c => c.IsDefaultSortColumn)
+                .Select(c => c.GetColumnPropertyName())
+                .FirstOrDefault();
+        }
+    }
+
+    /// <summary>
+    /// Returns the default sort direction.
+    /// </summary>
+    public SortDirection DefaultSortDirection
+    {
+        get
+        {
+            return Columns
+                .Where(c => c.IsDefaultSortColumn)
+                .Select(c => c.DefaultSortDirection)
+                .FirstOrDefault();
+        }
+    }
+
     private IList<DataTableColumn<TModel>> Columns { get; set; } = new List<DataTableColumn<TModel>>();
 
     /// <summary>
