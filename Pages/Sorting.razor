@@ -3,7 +3,11 @@
 @using BlazorTableDemo.Data
 @inject WeatherForecastService ForecastService
 
-<DataTable TModel="WeatherForecast" Items="LoadForecasts" SortChanged="(c, d) => { this.SortColumn = c; this.SortDirection = d; }">
+<DataTable TModel="WeatherForecast" Items="LoadForecasts" SortChanged="(c, d) => { this.SortColumn = c; this.SortDirection = d; }"
+            ContainerCssClass="d-flex justify-center align-center" 
+            ContainerAttributes=@(new Dictionary<string, object>() { { "style", "width: 100%;" } })
+            Styles="TableStyle.Striped" 
+            TableAttributes=@(new Dictionary<string, object>() { { "style", "width: 100%;" } })>
     <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.Date.ToShortDateString()" 
                      IsDefaultSortColumn="true" DefaultSortDirection="SortDirection.Descending" />
     <DataTableColumn TModel="WeatherForecast" IsSortable="true" Property="(e) => e.TemperatureC" CustomTitle="Celsius" />
