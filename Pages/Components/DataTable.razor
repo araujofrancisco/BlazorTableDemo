@@ -1,12 +1,14 @@
-﻿@typeparam TModel
+﻿@using System.Text;
+
+@typeparam TModel
 
 @{
     var visibleColumns = Columns.Where(e => e.IsVisible).ToList();
 }
 
 <CascadingValue Value="this">
-    <div class="virtWrapper">
-        <table class="table table-striped">
+    <div class="@ContainerCssClass" @attributes="ContainerAttributes">
+        <table class="@CssClass @GetTableStyleCssClasses()" @attributes="TableAttributes">
             <thead>
                 <tr>
                     @foreach (DataTableColumn<TModel> column in visibleColumns)
@@ -94,6 +96,13 @@
     [Parameter] public EventCallback<TModel> RowClickedEvent { get; set; }
     [Parameter] public TModel SelectedItem { get; set; }
 
+    [Parameter] public string ContainerCssClass { get; set; } = "table-responsive";
+    [Parameter] public Dictionary<string, object>? ContainerAttributes { get; set; }
+
+    [Parameter] public string CssClass { get; set; } = "table";
+    [Parameter] public TableStyle Styles { get; set; }
+    [Parameter] public Dictionary<string, object>? TableAttributes { get; set; }
+
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private Virtualize<TModel> asyncVirtualize;        // can be used to force table update if required by calling asyncVirtualize.RefreshDataAsync()
@@ -101,6 +110,8 @@
     private Guid? SortColumnGuid { get; set; }
     private SortDirection SortDirection { get; set; } = SortDirection.Ascending;
     private string SortColumn { get; set; }
+
+    private IList<DataTableColumn<TModel>> Columns { get; set; } = new List<DataTableColumn<TModel>>();
 
     /// <summary>
     /// Returns the default sort column.
@@ -130,7 +141,14 @@
         }
     }
 
-    private IList<DataTableColumn<TModel>> Columns { get; set; } = new List<DataTableColumn<TModel>>();
+    private string GetTableStyleCssClasses()
+    {
+        StringBuilder classes = new StringBuilder();
+
+        Styles.ToString().Split(',').Where(e => !string.IsNullOrEmpty(e.ToLower())).ToList().ForEach(e => classes.Append($"table-{e.Trim().ToLower()} "));
+
+        return classes.ToString();
+    }
 
     /// <summary>
     /// Adds a column to the collection.
